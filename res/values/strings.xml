@@ -3,4 +3,7 @@
     <string name="app_name">云检3</string>
     <string name="dialog_title">dialog_title</string>
     <string name="dialog_message">dialog_message</string>
+    <string name="generic_server_down">Generic server down</string>
+    <string name="no_internet">No wireless network connection</string>
+    <string name="generic_error">Generic error</string>
 </resources>

@@ -1,18 +1,33 @@
 package com.check.v3.business;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.check.client.R;
+import com.check.v3.api.VolleyErrorHelper;
 import com.check.v3.preferences.DataPreference;
 
 
@@ -23,6 +38,10 @@ public class MainActivity extends Activity
   boolean isExit;
   private DataPreference mDataPreferences;
   Handler mHandler;
+  private static String TAG = "MainActivity";
+  
+  JSONObject _json_data;
+  private RequestQueue mQueue;
 
 //
 //  private void showCustomDialog()
@@ -59,6 +78,58 @@ public class MainActivity extends Activity
   {
     super.onCreate(bundle);
     setContentView(R.layout.main_activity);
+    
+    mQueue = ApplicationController.getInstance().getRequestQueue();
+    
+    _json_data = new JSONObject();
+    try {
+		_json_data.put("name", "test");
+		_json_data.put("password", "12345");
+	} catch (JSONException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+        
+//    RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
+//    mQueue.add(new JsonObjectRequest(Method.POST, "http://42.121.55.211:8088/v3/api/v1/sessions/create", _json_data,
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        Log.d(TAG, "response : " + response.toString());
+//                    }
+//                }, new Response.ErrorListener() {
+//
+//					@Override
+//					public void onErrorResponse(VolleyError errInfo) {
+//						String errorStr = VolleyErrorHelper.getMessage(getApplicationContext(), errInfo);
+//						Log.d(TAG, "error response : " + errorStr);
+//					}
+//				}));
+//    mQueue.start();
+    
+    Button test_login_btn = (Button)findViewById(R.id.test_login_btn);
+    test_login_btn.setOnClickListener(new OnClickListener(){
+
+		@Override
+		public void onClick(View arg0) {
+		    mQueue.add(new JsonObjectRequest(Method.POST, "http://42.121.55.211:8088/v3/api/v1/sessions/create", _json_data,
+	                new Response.Listener<JSONObject>() {
+	                    @Override
+	                    public void onResponse(JSONObject response) {
+	                        Log.d(TAG, "response : " + response.toString());
+	                    }
+	                }, new Response.ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError errInfo) {
+							String errorStr = VolleyErrorHelper.getMessage(getApplicationContext(), errInfo);
+							Log.d(TAG, "error response : " + errorStr);
+						}
+					}));
+	    mQueue.start();
+		}
+    	
+    });
 //    Context localContext = getApplicationContext();
 //    DataPreference localDataPreference = new DataPreference(localContext);
 //    this.mDataPreferences = localDataPreference;

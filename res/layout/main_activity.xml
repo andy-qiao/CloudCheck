@@ -30,6 +30,15 @@
             android:text=""
             android:textColor="@color/color_white"
             android:textSize="15.0sp" />
+        
+         <Button
+            android:id="@+id/test_login_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Click to Login"
+            android:textColor="@color/color_white"
+            android:textSize="15.0sp" />
     </LinearLayout>
 
 </RelativeLayout>
